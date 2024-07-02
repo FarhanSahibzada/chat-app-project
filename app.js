@@ -35,7 +35,6 @@ function myfunction() {
     let inputs = input.value.toLowerCase();
     let inslit = inputs.split(" ");
     // how are you
-    console.log(typeof inslit);
     let h = inslit.indexOf("how");
     let a = inslit.indexOf("are");
     let y = inslit.indexOf("you");
@@ -64,14 +63,15 @@ function myfunction() {
     // day
     let day = inslit.indexOf("day");
 
-    
+
     if (inputs.length > 30) {
         score++;
         num = `A${score}`;
-        message.innerHTML += `<div class="message1" id="${num}"><h5 class="m1child"><br>ME</h5><br>${inputs.slice(0, 10)}<br>${inputs.slice(10, 20)}<br>${inputs.slice(20, 30)}<a id="btn2" class="btn2">...Show More</a></div>`
-        localStorage.setItem("longmessage",inputs);
-        var nums = document.getElementById(num);
-    
+        message.innerHTML += `<div class="message1" id="${num}">
+        <h5 class="m1child"><br>ME</h5>
+        <br>${inputs.slice(0, 10)}<br>${inputs.slice(10, 20)}<br>${inputs.slice(20, 30)}
+        <a id="btn2-${num}" class="btn2">...Show More</a></div>`
+        localStorage.setItem(`longmessage-${num}`,inputs);
     } else {
         message.innerHTML += `<div class="message1" id="message1"><h5 class="m1child"><br>ME</h5><br>${inputs}</div>`
     }
@@ -105,8 +105,10 @@ function myfunction() {
         }, 800);
     }else if (day != -1) {
         setTimeout(() => {
+            console.log(add);    
             pc.innerHTML += `<div class="pcmess" id="pcmess"><h5 class="m2child"><br>AI Chatbot</h5><br>Today is ${todate.slice(0,3)} </div>`
         }, 800);
+    
     }
     else if (fu != -1) {
         setTimeout(() => {
@@ -144,12 +146,12 @@ Problem-Solving Skills: Enhance your ability to solve problems. </div>`
 
 
 message.addEventListener("click", function (e) {
-    // let input = document.getElementById("input");
-    // let inputs = input.value.toLowerCase();
-    let long = localStorage.getItem("longmessage");
-     if (e.target.id === "btn2"){
-         message.innerHTML = `<div class="message1" id="${num}"<h5 class="m1child"><br>ME</h5><br>${long.slice(0,25)} <br>${long.slice(25,50)}<br>${long.slice(50)} </div>`
-    //    num.innerHTML = `${long.slice(0,25)} <br>${long.slice(25,50)}<br>${long.slice(50)}`;
-    
+    if(e.target.classList.contains("btn2")){    
+        let id = e.target.id.split("-")[1];
+        let long = localStorage.getItem(`longmessage-${id}`);
+        let messageDiv = document.getElementById(id);
+        messageDiv.innerHTML = `
+            <h5 class="m1child"><br>ME</h5><br>${long.slice(0, 25)}<br>${long.slice(25, 50)}<br>${long.slice(50)}
+        `;
      }
 });
